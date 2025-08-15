@@ -15,6 +15,7 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -25,6 +26,7 @@ import (
 	"github.com/xxf098/lite-proxy/request"
 	"github.com/xxf098/lite-proxy/utils"
 	"github.com/xxf098/lite-proxy/web/render"
+	"gopkg.in/yaml.v3"
 )
 
 var (
@@ -38,6 +40,7 @@ const (
 	PIC_NONE
 	JSON_OUTPUT
 	TEXT_OUTPUT
+	YAML_OUTPUT
 )
 
 type PAESE_TYPE int
@@ -538,6 +541,8 @@ func (p *ProfileTest) testAll(ctx context.Context) (render.Nodes, error) {
 		p.saveJSON(nodes, traffic, duration, successCount, linksCount)
 	} else if p.Options.OutputMode == TEXT_OUTPUT {
 		p.saveText(nodes)
+	} else if p.Options.OutputMode == YAML_OUTPUT {
+		p.saveYAML(nodes)
 	} else {
 		// render the result to pic
 		p.renderPic(nodes, traffic, duration, successCount, linksCount)
@@ -590,6 +595,570 @@ func (p *ProfileTest) saveText(nodes render.Nodes) error {
 	}
 	data := []byte(strings.Join(links, "\n"))
 	return ioutil.WriteFile("output.txt", data, 0644)
+}
+
+func (p *ProfileTest) saveYAML(nodes render.Nodes) error {
+	// Build proxies list from working nodes
+	proxies := make([]map[string]interface{}, 0)
+	usedNames := map[string]bool{}
+	for _, node := range nodes {
+		if !node.IsOk {
+			continue
+		}
+		if len(strings.TrimSpace(node.Link)) < 1 {
+			continue
+		}
+		uniqueName := makeUniqueProxyName(node.Remarks, usedNames)
+		m, err := linkToClashProxy(node.Link, uniqueName)
+		if err != nil {
+			continue
+		}
+		proxies = append(proxies, m)
+	}
+
+	// Determine base file: use config.example.yaml template to keep exact sections
+	configPath := "config.yaml"
+	basePath := "config.example.yaml"
+	if _, err := os.Stat(basePath); err != nil {
+		// fallback to existing config.yaml if example template not found
+		basePath = configPath
+	}
+
+	// Read template text
+	raw, err := ioutil.ReadFile(basePath)
+	if err != nil {
+		return err
+	}
+	lines := strings.Split(string(raw), "\n")
+	// find 'proxies:' top-level key
+	proxiesIdx := -1
+	for i, line := range lines {
+		if strings.TrimSpace(line) == "proxies:" && (len(line) == 8 || !strings.HasPrefix(line, " ")) {
+			proxiesIdx = i
+			break
+		}
+	}
+	if proxiesIdx == -1 {
+		// no proxies key; append one at end
+		lines = append(lines, "proxies:")
+		proxiesIdx = len(lines) - 1
+		lines = append(lines, "")
+	}
+	// determine end of proxies block
+	// Prefer explicit next section 'proxy-groups:' to avoid leaving residual entries
+	endIdx := len(lines)
+	for i := proxiesIdx + 1; i < len(lines); i++ {
+		line := lines[i]
+		trim := strings.TrimSpace(line)
+		if trim == "" {
+			continue
+		}
+		if !strings.HasPrefix(line, " ") && trim == "proxy-groups:" {
+			endIdx = i
+			break
+		}
+		// fallback: any next top-level key
+		if !strings.HasPrefix(line, " ") && strings.HasSuffix(trim, ":") {
+			endIdx = i
+			break
+		}
+	}
+	// trim any trailing lone closing braces or templated proxy lines within proxies block
+	for endIdx-1 > proxiesIdx+1 {
+		lastLine := strings.TrimSpace(lines[endIdx-1])
+		if lastLine == "}" || lastLine == "}," || strings.HasSuffix(lastLine, "}") || strings.HasPrefix(lastLine, "- {") {
+			endIdx--
+			continue
+		}
+		// stop at a clean boundary
+		break
+	}
+
+	// Also update proxy-groups -> proxies arrays to contain all proxy names
+	proxyNames := make([]string, 0, len(proxies))
+	for _, m := range proxies {
+		if n, ok := m["name"].(string); ok {
+			proxyNames = append(proxyNames, n)
+		}
+	}
+	// locate proxy-groups block
+	groupsStart := -1
+	groupsEnd := len(lines)
+	for i, line := range lines {
+		if strings.TrimSpace(line) == "proxy-groups:" && (len(line) == 13 || !strings.HasPrefix(line, " ")) {
+			groupsStart = i
+			break
+		}
+	}
+	if groupsStart >= 0 {
+		for i := groupsStart + 1; i < len(lines); i++ {
+			t := strings.TrimSpace(lines[i])
+			if t == "" {
+				continue
+			}
+			if !strings.HasPrefix(lines[i], " ") && strings.HasSuffix(t, ":") {
+				groupsEnd = i
+				break
+			}
+		}
+		// mutate lines between groupsStart and groupsEnd: replace any proxies: [...] blocks inline
+		i := groupsStart + 1
+		for i < groupsEnd {
+			line := lines[i]
+			idx := strings.Index(line, "proxies:")
+			if idx >= 0 {
+				// locate closing bracket ']' possibly on same or later line
+				j := i
+				closeIdx := strings.Index(line, "]")
+				if closeIdx < 0 {
+					j = i + 1
+					for j < groupsEnd {
+						closeIdx = strings.Index(lines[j], "]")
+						if closeIdx >= 0 {
+							break
+						}
+						j++
+					}
+				}
+				// build new inline single-line proxies list preserving prefix/suffix
+				prefix := line[:idx] + "proxies: ["
+				suffix := ""
+				if closeIdx >= 0 {
+					suffix = lines[j][closeIdx+1:]
+				}
+				joined := make([]string, 0, len(proxyNames))
+				for _, name := range proxyNames {
+					joined = append(joined, formatYAMLScalar(name))
+				}
+				newLine := prefix + strings.Join(joined, ", ") + "]" + suffix
+				// replace lines i..j (inclusive) with new single line
+				front := append([]string{}, lines[:i]...)
+				back := append([]string{}, lines[j+1:]...)
+				lines = append(front, append([]string{newLine}, back...)...)
+				// adjust bounds after replacement
+				delta := 1 - (j + 1 - i)
+				groupsEnd += delta
+				if i < endIdx {
+					endIdx += delta
+				}
+				// continue after the replaced line
+				i++
+				continue
+			}
+			i++
+		}
+	}
+
+	// build new proxies block in single-line inline mapping style to match example
+	var b strings.Builder
+	if len(proxies) == 0 {
+		// output an empty sequence to keep YAML valid
+		b.WriteString("  []\n")
+	} else {
+		for idxProxy, m := range proxies {
+			typ, _ := m["type"].(string)
+			keyOrder := proxyKeyOrderForType(typ)
+			if !contains(keyOrder, "name") {
+				keyOrder = append([]string{"name"}, keyOrder...)
+			}
+			// collect parts in order, then remaining
+			parts := make([]string, 0, len(m))
+			for _, k := range keyOrder {
+				if v, ok := m[k]; ok {
+					parts = append(parts, k+": "+formatYAMLInline(v))
+				}
+			}
+			for k, v := range m {
+				if k == "type" || contains(keyOrder, k) {
+					continue
+				}
+				parts = append(parts, k+": "+formatYAMLInline(v))
+			}
+
+			b.WriteString("  - { ")
+			b.WriteString(strings.Join(parts, ", "))
+			if idxProxy < len(proxies)-1 {
+				b.WriteString(" }\n")
+			} else {
+				// last item: ensure newline then close brace without extra comma confusion
+				b.WriteString(" }\n")
+			}
+		}
+	}
+
+	newBlock := b.String()
+
+	// assemble new file content (replace exactly proxiesIdx..endIdx-1)
+	var out strings.Builder
+	out.WriteString(strings.Join(lines[:proxiesIdx+1], "\n"))
+	out.WriteString("\n")
+	out.WriteString(newBlock)
+	out.WriteString(strings.Join(lines[endIdx:], "\n"))
+	if !strings.HasSuffix(out.String(), "\n") {
+		out.WriteString("\n")
+	}
+
+	return ioutil.WriteFile(configPath, []byte(out.String()), 0644)
+}
+
+func proxyKeyOrderForType(typ string) []string {
+	switch typ {
+	case "ss":
+		return []string{"name", "type", "server", "port", "cipher", "password", "udp"}
+	case "trojan":
+		return []string{"name", "type", "server", "port", "password", "sni", "alpn", "skip-cert-verify", "udp", "network", "ws-opts", "grpc-opts"}
+	case "vmess":
+		return []string{"name", "type", "server", "port", "uuid", "alterId", "cipher", "tls", "network", "ws-path", "ws-headers", "http-opts", "h2-opts", "skip-cert-verify", "servername"}
+	case "ssr":
+		return []string{"name", "type", "server", "port", "cipher", "password", "protocol", "protocol-param", "obfs", "obfs-param", "udp"}
+	case "http":
+		return []string{"name", "type", "server", "port", "username", "password", "tls", "sni", "skip-cert-verify"}
+	case "vless":
+		return []string{"name", "type", "server", "port", "uuid", "sni", "network"}
+	default:
+		return []string{"name", "type", "server", "port"}
+	}
+}
+
+func contains(slice []string, s string) bool {
+	for _, v := range slice {
+		if v == s {
+			return true
+		}
+	}
+	return false
+}
+
+func formatYAMLScalar(v interface{}) string {
+	switch val := v.(type) {
+	case bool:
+		if val {
+			return "true"
+		}
+		return "false"
+	case int:
+		return strconv.Itoa(val)
+	case int64:
+		return strconv.FormatInt(val, 10)
+	case uint16:
+		return strconv.Itoa(int(val))
+	case float64:
+		// avoid scientific notation
+		return strconv.FormatFloat(val, 'f', -1, 64)
+	case string:
+		// leave safe plain scalars unquoted to mimic example style
+		if isSafePlainYAML(val) {
+			return val
+		}
+		// escape quotes
+		s := strings.ReplaceAll(val, "\"", "\\\"")
+		return "\"" + s + "\""
+	default:
+		// fallback to YAML marshal then trim newline
+		b, _ := yaml.Marshal(val)
+		s := strings.TrimSpace(string(b))
+		return s
+	}
+}
+
+func isSafePlainYAML(s string) bool {
+	if s == "" {
+		return false
+	}
+	// allow alphanum, dash, dot, underscore, colon, slash
+	for _, r := range s {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || r == '-' || r == '.' || r == '_' || r == ':' || r == '/' {
+			continue
+		}
+		return false
+	}
+	return true
+}
+
+func leadingSpaces(s string) string {
+	i := 0
+	for i < len(s) && s[i] == ' ' {
+		i++
+	}
+	return s[:i]
+}
+
+// formatYAMLInline renders basic types, []string, and map[string]string inline.
+func formatYAMLInline(v interface{}) string {
+	switch t := v.(type) {
+	case []string:
+		// inline array: [a, b]
+		items := make([]string, 0, len(t))
+		for _, it := range t {
+			items = append(items, formatYAMLScalar(it))
+		}
+		return "[" + strings.Join(items, ", ") + "]"
+	case map[string]string:
+		// inline map: { k: v }
+		kvs := make([]string, 0, len(t))
+		for k, v := range t {
+			kvs = append(kvs, k+": "+formatYAMLScalar(v))
+		}
+		sort.Strings(kvs)
+		return "{" + strings.Join(kvs, ", ") + "}"
+	default:
+		return formatYAMLScalar(v)
+	}
+}
+
+// ensure unique proxy names by suffixing with (n) when needed
+func makeUniqueProxyName(base string, used map[string]bool) string {
+	name := strings.TrimSpace(base)
+	if name == "" {
+		name = "Proxy"
+	}
+	if !used[name] {
+		used[name] = true
+		return name
+	}
+	// try name (2..)
+	for i := 2; i < 10000; i++ {
+		candidate := fmt.Sprintf("%s (%d)", name, i)
+		if !used[candidate] {
+			used[candidate] = true
+			return candidate
+		}
+	}
+	// fallback: append timestamp
+	ts := time.Now().UnixNano()
+	candidate := fmt.Sprintf("%s-%d", name, ts)
+	used[candidate] = true
+	return candidate
+}
+
+func linkToClashProxy(link string, name string) (map[string]interface{}, error) {
+	matches, err := utils.CheckLink(link)
+	if err != nil || len(matches) < 2 {
+		return nil, err
+	}
+	scheme := strings.ToLower(matches[1])
+	switch scheme {
+	case "vmess":
+		opt, err := config.VmessLinkToVmessOption(link)
+		if err != nil {
+			return nil, err
+		}
+		m := map[string]interface{}{
+			"name":   name,
+			"type":   "vmess",
+			"server": opt.Server,
+			"port":   int(opt.Port),
+		}
+		id := opt.UUID
+		if id == "" {
+			id = opt.Password
+		}
+		if id != "" {
+			m["uuid"] = id
+		}
+		// always include alterId, default to 0 when absent
+		m["alterId"] = opt.AlterID
+		if opt.Cipher != "" {
+			m["cipher"] = opt.Cipher
+		}
+		if opt.TLS {
+			m["tls"] = true
+		}
+		if opt.Network != "" {
+			m["network"] = opt.Network
+		}
+		if opt.WSPath != "" {
+			m["ws-path"] = opt.WSPath
+		}
+		if len(opt.WSHeaders) > 0 {
+			m["ws-headers"] = opt.WSHeaders
+		}
+		if opt.SkipCertVerify {
+			m["skip-cert-verify"] = opt.SkipCertVerify
+		}
+		if opt.ServerName != "" {
+			m["servername"] = opt.ServerName
+		}
+		if opt.HTTPOpts.Method != "" || len(opt.HTTPOpts.Path) > 0 || len(opt.HTTPOpts.Headers) > 0 {
+			httpOpts := map[string]interface{}{}
+			if opt.HTTPOpts.Method != "" {
+				httpOpts["method"] = opt.HTTPOpts.Method
+			}
+			if len(opt.HTTPOpts.Path) > 0 {
+				httpOpts["path"] = opt.HTTPOpts.Path
+			}
+			if len(opt.HTTPOpts.Headers) > 0 {
+				httpOpts["headers"] = opt.HTTPOpts.Headers
+			}
+			m["http-opts"] = httpOpts
+		}
+		if len(opt.HTTP2Opts.Host) > 0 || opt.HTTP2Opts.Path != "" {
+			h2 := map[string]interface{}{}
+			if len(opt.HTTP2Opts.Host) > 0 {
+				h2["host"] = opt.HTTP2Opts.Host
+			}
+			if opt.HTTP2Opts.Path != "" {
+				h2["path"] = opt.HTTP2Opts.Path
+			}
+			m["h2-opts"] = h2
+		}
+		if opt.WSOpts.Path != "" || len(opt.WSOpts.Headers) > 0 || opt.WSOpts.MaxEarlyData != 0 || opt.WSOpts.EarlyDataHeaderName != "" {
+			ws := map[string]interface{}{}
+			if opt.WSOpts.Path != "" {
+				ws["path"] = opt.WSOpts.Path
+			}
+			if len(opt.WSOpts.Headers) > 0 {
+				ws["headers"] = opt.WSOpts.Headers
+			}
+			if opt.WSOpts.MaxEarlyData != 0 {
+				ws["max-early-data"] = opt.WSOpts.MaxEarlyData
+			}
+			if opt.WSOpts.EarlyDataHeaderName != "" {
+				ws["early-data-header-name"] = opt.WSOpts.EarlyDataHeaderName
+			}
+			m["ws-opts"] = ws
+		}
+		return m, nil
+	case "trojan":
+		opt, err := config.TrojanLinkToTrojanOption(link)
+		if err != nil {
+			return nil, err
+		}
+		m := map[string]interface{}{
+			"name":     name,
+			"type":     "trojan",
+			"server":   opt.Server,
+			"port":     opt.Port,
+			"password": opt.Password,
+		}
+		if len(opt.ALPN) > 0 {
+			m["alpn"] = opt.ALPN
+		}
+		if opt.SNI != "" {
+			m["sni"] = opt.SNI
+		}
+		if opt.SkipCertVerify {
+			m["skip-cert-verify"] = opt.SkipCertVerify
+		}
+		if opt.UDP {
+			m["udp"] = true
+		}
+		if opt.Network != "" {
+			m["network"] = opt.Network
+		}
+		if opt.WSOpts.Path != "" || len(opt.WSOpts.Headers) > 0 {
+			ws := map[string]interface{}{}
+			if opt.WSOpts.Path != "" {
+				ws["path"] = opt.WSOpts.Path
+			}
+			if len(opt.WSOpts.Headers) > 0 {
+				ws["headers"] = opt.WSOpts.Headers
+			}
+			m["ws-opts"] = ws
+		}
+		if opt.GrpcOpts.GrpcServiceName != "" {
+			m["grpc-opts"] = map[string]interface{}{"grpc-service-name": opt.GrpcOpts.GrpcServiceName}
+		}
+		return m, nil
+	case "ss":
+		opt, err := config.SSLinkToSSOption(link)
+		if err != nil {
+			return nil, err
+		}
+		m := map[string]interface{}{
+			"name":     name,
+			"type":     "ss",
+			"server":   opt.Server,
+			"port":     opt.Port,
+			"cipher":   opt.Cipher,
+			"password": opt.Password,
+		}
+		if opt.UDP {
+			m["udp"] = true
+		}
+		if opt.Plugin != "" {
+			m["plugin"] = opt.Plugin
+		}
+		if len(opt.PluginOpts) > 0 {
+			m["plugin-opts"] = opt.PluginOpts
+		}
+		return m, nil
+	case "ssr":
+		opt, err := config.SSRLinkToSSROption(link)
+		if err != nil {
+			return nil, err
+		}
+		m := map[string]interface{}{
+			"name":     name,
+			"type":     "ssr",
+			"server":   opt.Server,
+			"port":     opt.Port,
+			"cipher":   opt.Cipher,
+			"password": opt.Password,
+			"protocol": opt.Protocol,
+			"obfs":     opt.Obfs,
+		}
+		if opt.ObfsParam != "" {
+			m["obfs-param"] = opt.ObfsParam
+		}
+		if opt.ProtocolParam != "" {
+			m["protocol-param"] = opt.ProtocolParam
+		}
+		if opt.UDP {
+			m["udp"] = true
+		}
+		return m, nil
+	case "http":
+		opt, err := config.HttpLinkToHttpOption(link)
+		if err != nil {
+			return nil, err
+		}
+		m := map[string]interface{}{
+			"name":   name,
+			"type":   "http",
+			"server": opt.Server,
+			"port":   opt.Port,
+		}
+		if opt.UserName != "" {
+			m["username"] = opt.UserName
+		}
+		if opt.Password != "" {
+			m["password"] = opt.Password
+		}
+		if opt.TLS {
+			m["tls"] = true
+		}
+		if opt.SNI != "" {
+			m["sni"] = opt.SNI
+		}
+		if opt.SkipCertVerify {
+			m["skip-cert-verify"] = opt.SkipCertVerify
+		}
+		return m, nil
+	case "vless":
+		cfg, err := config.Link2Config(link)
+		if err != nil {
+			return nil, err
+		}
+		m := map[string]interface{}{
+			"name":   name,
+			"type":   "vless",
+			"server": cfg.Server,
+			"port":   cfg.Port,
+		}
+		if cfg.Password != "" {
+			m["uuid"] = cfg.Password
+		}
+		if cfg.SNI != "" {
+			m["sni"] = cfg.SNI
+		}
+		if cfg.Net != "" {
+			m["network"] = cfg.Net
+		}
+		return m, nil
+	default:
+		return nil, fmt.Errorf("unsupported scheme: %s", scheme)
+	}
 }
 
 func (p *ProfileTest) testOne(ctx context.Context, index int, link string, nodeChan chan<- render.Node, trafficChan chan<- int64) error {

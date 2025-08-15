@@ -1,0 +1,845 @@
+mixed-port: 7890
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: info
+external-controller: "127.0.0.1:9090"
+dns:
+  enable: true
+  ipv6: false
+  default-nameserver: [223.5.5.5, 119.29.29.29]
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  use-hosts: true
+  nameserver: ["https://doh.pub/dns-query", "https://dns.alidns.com/dns-query"]
+  fallback:
+    [
+      "https://doh.dns.sb/dns-query",
+      "https://dns.cloudflare.com/dns-query",
+      "https://dns.twnic.tw/dns-query",
+      "tls://8.8.4.4:853",
+    ]
+  fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4, 0.0.0.0/32] }
+proxies:
+  - {
+      name: "⏳ 剩余流量：1486.18 GB",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 18820,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "⏱ 到期时间：2026-08-17",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 18820,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🌐 官网：chongdong.app",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 18820,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇭🇰 香港lite1  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 43761,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇭🇰 香港lite2  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 33043,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇭🇰 香港lite3  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 43403,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇨🇳 台湾01  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 13928,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇨🇳 台湾02  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 42140,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇨🇳 台湾03  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 36359,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇯🇵 日本01  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 15348,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇯🇵 日本02  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 25665,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇯🇵 日本03  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 63118,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇸🇬 新加坡01  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 23763,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇸🇬 新加坡02  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 56438,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇸🇬 新加坡03  解锁流媒体",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 27047,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇰🇷 韩国01  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 18199,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇰🇷 韩国02  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 19796,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇺🇸 美国01  解锁TikTok   ChatGPT",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 19994,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇺🇸 美国02  解锁TikTok   ChatGPT",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 20553,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇺🇸 美国03  解锁TikTok   ChatGPT",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 49577,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇲🇾 马来西亚01",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 49061,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇻🇳 越南01",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 32522,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇹🇭 泰国01",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 34518,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇮🇩 印尼01",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 26013,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇰🇭 柬埔寨01",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 59645,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇵🇭 菲律宾01",
+      type: ss,
+      server: oss-cn-guangzhou.cllspelsj.com,
+      port: 57923,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇬🇧 英国01  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 62371,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇬🇧 英国02  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 59380,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇹🇷 土耳其01  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 17842,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+  - {
+      name: "🇹🇷 土耳其02  解锁流媒体",
+      type: ss,
+      server: oss-cn-shanghai.cllspelsj.com,
+      port: 16803,
+      cipher: aes-256-gcm,
+      password: c3d45c1f-d3a2-3d9e-816e-d528c894fd9f,
+      udp: true,
+    }
+
+proxy-groups:
+  - {
+      name: 虫洞加速,
+      type: select,
+      proxies:
+        [
+          "🇭🇰 香港lite1  解锁流媒体",
+          "🇭🇰 香港lite2  解锁流媒体",
+          "🇭🇰 香港lite3  解锁流媒体",
+          "🇨🇳 台湾01  解锁流媒体",
+          "🇨🇳 台湾02  解锁流媒体",
+          "🇨🇳 台湾03  解锁流媒体",
+          "🇯🇵 日本01  解锁流媒体",
+          "🇯🇵 日本02  解锁流媒体",
+          "🇯🇵 日本03  解锁流媒体",
+          "🇸🇬 新加坡01  解锁流媒体",
+          "🇸🇬 新加坡02  解锁流媒体",
+          "🇸🇬 新加坡03  解锁流媒体",
+          "🇰🇷 韩国01  解锁流媒体",
+          "🇰🇷 韩国02  解锁流媒体",
+          "🇺🇸 美国01  解锁TikTok   ChatGPT",
+          "🇺🇸 美国02  解锁TikTok   ChatGPT",
+          "🇺🇸 美国03  解锁TikTok   ChatGPT",
+          "🇲🇾 马来西亚01",
+          "🇻🇳 越南01",
+          "🇹🇭 泰国01",
+          "🇮🇩 印尼01",
+          "🇰🇭 柬埔寨01",
+          "🇵🇭 菲律宾01",
+          "🇬🇧 英国01  解锁流媒体",
+          "🇬🇧 英国02  解锁流媒体",
+          "🇹🇷 土耳其01  解锁流媒体",
+          "🇹🇷 土耳其02  解锁流媒体",
+        ],
+    }
+
+rules:
+  - "DOMAIN-SUFFIX,services.googleapis.cn,虫洞加速"
+  - "DOMAIN-SUFFIX,xn--ngstr-lra8j.com,虫洞加速"
+  - "DOMAIN,safebrowsing.urlsec.qq.com,DIRECT"
+  - "DOMAIN,safebrowsing.googleapis.com,DIRECT"
+  - "DOMAIN,developer.apple.com,虫洞加速"
+  - "DOMAIN-SUFFIX,digicert.com,虫洞加速"
+  - "DOMAIN,ocsp.apple.com,虫洞加速"
+  - "DOMAIN,ocsp.comodoca.com,虫洞加速"
+  - "DOMAIN,ocsp.usertrust.com,虫洞加速"
+  - "DOMAIN,ocsp.sectigo.com,虫洞加速"
+  - "DOMAIN,ocsp.verisign.net,虫洞加速"
+  - "DOMAIN-SUFFIX,apple-dns.net,虫洞加速"
+  - "DOMAIN,testflight.apple.com,虫洞加速"
+  - "DOMAIN,sandbox.itunes.apple.com,虫洞加速"
+  - "DOMAIN,itunes.apple.com,虫洞加速"
+  - "DOMAIN-SUFFIX,apps.apple.com,虫洞加速"
+  - "DOMAIN-SUFFIX,blobstore.apple.com,虫洞加速"
+  - "DOMAIN,cvws.icloud-content.com,虫洞加速"
+  - "DOMAIN-SUFFIX,mzstatic.com,DIRECT"
+  - "DOMAIN-SUFFIX,itunes.apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,icloud.com,DIRECT"
+  - "DOMAIN-SUFFIX,icloud-content.com,DIRECT"
+  - "DOMAIN-SUFFIX,me.com,DIRECT"
+  - "DOMAIN-SUFFIX,aaplimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,cdn20.com,DIRECT"
+  - "DOMAIN-SUFFIX,cdn-apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,akadns.net,DIRECT"
+  - "DOMAIN-SUFFIX,akamaiedge.net,DIRECT"
+  - "DOMAIN-SUFFIX,edgekey.net,DIRECT"
+  - "DOMAIN-SUFFIX,mwcloudcdn.com,DIRECT"
+  - "DOMAIN-SUFFIX,mwcname.com,DIRECT"
+  - "DOMAIN-SUFFIX,apple.com,DIRECT"
+  - "DOMAIN-SUFFIX,apple-cloudkit.com,DIRECT"
+  - "DOMAIN-SUFFIX,apple-mapkit.com,DIRECT"
+  - "DOMAIN-SUFFIX,126.com,DIRECT"
+  - "DOMAIN-SUFFIX,126.net,DIRECT"
+  - "DOMAIN-SUFFIX,127.net,DIRECT"
+  - "DOMAIN-SUFFIX,163.com,DIRECT"
+  - "DOMAIN-SUFFIX,360buyimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,36kr.com,DIRECT"
+  - "DOMAIN-SUFFIX,acfun.tv,DIRECT"
+  - "DOMAIN-SUFFIX,air-matters.com,DIRECT"
+  - "DOMAIN-SUFFIX,aixifan.com,DIRECT"
+  - "DOMAIN-KEYWORD,alicdn,DIRECT"
+  - "DOMAIN-KEYWORD,alipay,DIRECT"
+  - "DOMAIN-KEYWORD,taobao,DIRECT"
+  - "DOMAIN-SUFFIX,amap.com,DIRECT"
+  - "DOMAIN-SUFFIX,autonavi.com,DIRECT"
+  - "DOMAIN-KEYWORD,baidu,DIRECT"
+  - "DOMAIN-SUFFIX,bdimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,bdstatic.com,DIRECT"
+  - "DOMAIN-SUFFIX,bilibili.com,DIRECT"
+  - "DOMAIN-SUFFIX,bilivideo.com,DIRECT"
+  - "DOMAIN-SUFFIX,caiyunapp.com,DIRECT"
+  - "DOMAIN-SUFFIX,clouddn.com,DIRECT"
+  - "DOMAIN-SUFFIX,cnbeta.com,DIRECT"
+  - "DOMAIN-SUFFIX,cnbetacdn.com,DIRECT"
+  - "DOMAIN-SUFFIX,cootekservice.com,DIRECT"
+  - "DOMAIN-SUFFIX,csdn.net,DIRECT"
+  - "DOMAIN-SUFFIX,ctrip.com,DIRECT"
+  - "DOMAIN-SUFFIX,dgtle.com,DIRECT"
+  - "DOMAIN-SUFFIX,dianping.com,DIRECT"
+  - "DOMAIN-SUFFIX,douban.com,DIRECT"
+  - "DOMAIN-SUFFIX,doubanio.com,DIRECT"
+  - "DOMAIN-SUFFIX,duokan.com,DIRECT"
+  - "DOMAIN-SUFFIX,easou.com,DIRECT"
+  - "DOMAIN-SUFFIX,ele.me,DIRECT"
+  - "DOMAIN-SUFFIX,feng.com,DIRECT"
+  - "DOMAIN-SUFFIX,fir.im,DIRECT"
+  - "DOMAIN-SUFFIX,frdic.com,DIRECT"
+  - "DOMAIN-SUFFIX,g-cores.com,DIRECT"
+  - "DOMAIN-SUFFIX,godic.net,DIRECT"
+  - "DOMAIN-SUFFIX,gtimg.com,DIRECT"
+  - "DOMAIN,cdn.hockeyapp.net,DIRECT"
+  - "DOMAIN-SUFFIX,hongxiu.com,DIRECT"
+  - "DOMAIN-SUFFIX,hxcdn.net,DIRECT"
+  - "DOMAIN-SUFFIX,iciba.com,DIRECT"
+  - "DOMAIN-SUFFIX,ifeng.com,DIRECT"
+  - "DOMAIN-SUFFIX,ifengimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,ipip.net,DIRECT"
+  - "DOMAIN-SUFFIX,iqiyi.com,DIRECT"
+  - "DOMAIN-SUFFIX,jd.com,DIRECT"
+  - "DOMAIN-SUFFIX,jianshu.com,DIRECT"
+  - "DOMAIN-SUFFIX,knewone.com,DIRECT"
+  - "DOMAIN-SUFFIX,le.com,DIRECT"
+  - "DOMAIN-SUFFIX,lecloud.com,DIRECT"
+  - "DOMAIN-SUFFIX,lemicp.com,DIRECT"
+  - "DOMAIN-SUFFIX,licdn.com,DIRECT"
+  - "DOMAIN-SUFFIX,luoo.net,DIRECT"
+  - "DOMAIN-SUFFIX,meituan.com,DIRECT"
+  - "DOMAIN-SUFFIX,meituan.net,DIRECT"
+  - "DOMAIN-SUFFIX,mi.com,DIRECT"
+  - "DOMAIN-SUFFIX,miaopai.com,DIRECT"
+  - "DOMAIN-SUFFIX,microsoft.com,DIRECT"
+  - "DOMAIN-SUFFIX,microsoftonline.com,DIRECT"
+  - "DOMAIN-SUFFIX,miui.com,DIRECT"
+  - "DOMAIN-SUFFIX,miwifi.com,DIRECT"
+  - "DOMAIN-SUFFIX,mob.com,DIRECT"
+  - "DOMAIN-SUFFIX,netease.com,DIRECT"
+  - "DOMAIN-SUFFIX,office.com,DIRECT"
+  - "DOMAIN-SUFFIX,office365.com,DIRECT"
+  - "DOMAIN-KEYWORD,officecdn,DIRECT"
+  - "DOMAIN-SUFFIX,oschina.net,DIRECT"
+  - "DOMAIN-SUFFIX,ppsimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,pstatp.com,DIRECT"
+  - "DOMAIN-SUFFIX,qcloud.com,DIRECT"
+  - "DOMAIN-SUFFIX,qdaily.com,DIRECT"
+  - "DOMAIN-SUFFIX,qdmm.com,DIRECT"
+  - "DOMAIN-SUFFIX,qhimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,qhres.com,DIRECT"
+  - "DOMAIN-SUFFIX,qidian.com,DIRECT"
+  - "DOMAIN-SUFFIX,qihucdn.com,DIRECT"
+  - "DOMAIN-SUFFIX,qiniu.com,DIRECT"
+  - "DOMAIN-SUFFIX,qiniucdn.com,DIRECT"
+  - "DOMAIN-SUFFIX,qiyipic.com,DIRECT"
+  - "DOMAIN-SUFFIX,qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,qqurl.com,DIRECT"
+  - "DOMAIN-SUFFIX,rarbg.to,DIRECT"
+  - "DOMAIN-SUFFIX,ruguoapp.com,DIRECT"
+  - "DOMAIN-SUFFIX,segmentfault.com,DIRECT"
+  - "DOMAIN-SUFFIX,sinaapp.com,DIRECT"
+  - "DOMAIN-SUFFIX,smzdm.com,DIRECT"
+  - "DOMAIN-SUFFIX,snapdrop.net,DIRECT"
+  - "DOMAIN-SUFFIX,sogou.com,DIRECT"
+  - "DOMAIN-SUFFIX,sogoucdn.com,DIRECT"
+  - "DOMAIN-SUFFIX,sohu.com,DIRECT"
+  - "DOMAIN-SUFFIX,soku.com,DIRECT"
+  - "DOMAIN-SUFFIX,speedtest.net,DIRECT"
+  - "DOMAIN-SUFFIX,sspai.com,DIRECT"
+  - "DOMAIN-SUFFIX,suning.com,DIRECT"
+  - "DOMAIN-SUFFIX,taobao.com,DIRECT"
+  - "DOMAIN-SUFFIX,tencent.com,DIRECT"
+  - "DOMAIN-SUFFIX,tenpay.com,DIRECT"
+  - "DOMAIN-SUFFIX,tianyancha.com,DIRECT"
+  - "DOMAIN-SUFFIX,tmall.com,DIRECT"
+  - "DOMAIN-SUFFIX,tudou.com,DIRECT"
+  - "DOMAIN-SUFFIX,umetrip.com,DIRECT"
+  - "DOMAIN-SUFFIX,upaiyun.com,DIRECT"
+  - "DOMAIN-SUFFIX,upyun.com,DIRECT"
+  - "DOMAIN-SUFFIX,veryzhun.com,DIRECT"
+  - "DOMAIN-SUFFIX,weather.com,DIRECT"
+  - "DOMAIN-SUFFIX,weibo.com,DIRECT"
+  - "DOMAIN-SUFFIX,xiami.com,DIRECT"
+  - "DOMAIN-SUFFIX,xiami.net,DIRECT"
+  - "DOMAIN-SUFFIX,xiaomicp.com,DIRECT"
+  - "DOMAIN-SUFFIX,ximalaya.com,DIRECT"
+  - "DOMAIN-SUFFIX,xmcdn.com,DIRECT"
+  - "DOMAIN-SUFFIX,xunlei.com,DIRECT"
+  - "DOMAIN-SUFFIX,yhd.com,DIRECT"
+  - "DOMAIN-SUFFIX,yihaodianimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,yinxiang.com,DIRECT"
+  - "DOMAIN-SUFFIX,ykimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,youdao.com,DIRECT"
+  - "DOMAIN-SUFFIX,youku.com,DIRECT"
+  - "DOMAIN-SUFFIX,zealer.com,DIRECT"
+  - "DOMAIN-SUFFIX,zhihu.com,DIRECT"
+  - "DOMAIN-SUFFIX,zhimg.com,DIRECT"
+  - "DOMAIN-SUFFIX,zimuzu.tv,DIRECT"
+  - "DOMAIN-SUFFIX,zoho.com,DIRECT"
+  - "DOMAIN-KEYWORD,amazon,虫洞加速"
+  - "DOMAIN-KEYWORD,google,虫洞加速"
+  - "DOMAIN-KEYWORD,gmail,虫洞加速"
+  - "DOMAIN-KEYWORD,youtube,虫洞加速"
+  - "DOMAIN-KEYWORD,facebook,虫洞加速"
+  - "DOMAIN-SUFFIX,fb.me,虫洞加速"
+  - "DOMAIN-SUFFIX,fbcdn.net,虫洞加速"
+  - "DOMAIN-KEYWORD,twitter,虫洞加速"
+  - "DOMAIN-KEYWORD,instagram,虫洞加速"
+  - "DOMAIN-KEYWORD,dropbox,虫洞加速"
+  - "DOMAIN-SUFFIX,twimg.com,虫洞加速"
+  - "DOMAIN-KEYWORD,blogspot,虫洞加速"
+  - "DOMAIN-SUFFIX,youtu.be,虫洞加速"
+  - "DOMAIN-KEYWORD,whatsapp,虫洞加速"
+  - "DOMAIN-KEYWORD,admarvel,REJECT"
+  - "DOMAIN-KEYWORD,admaster,REJECT"
+  - "DOMAIN-KEYWORD,adsage,REJECT"
+  - "DOMAIN-KEYWORD,adsmogo,REJECT"
+  - "DOMAIN-KEYWORD,adsrvmedia,REJECT"
+  - "DOMAIN-KEYWORD,adwords,REJECT"
+  - "DOMAIN-KEYWORD,adservice,REJECT"
+  - "DOMAIN-SUFFIX,appsflyer.com,REJECT"
+  - "DOMAIN-KEYWORD,domob,REJECT"
+  - "DOMAIN-SUFFIX,doubleclick.net,REJECT"
+  - "DOMAIN-KEYWORD,duomeng,REJECT"
+  - "DOMAIN-KEYWORD,dwtrack,REJECT"
+  - "DOMAIN-KEYWORD,guanggao,REJECT"
+  - "DOMAIN-KEYWORD,lianmeng,REJECT"
+  - "DOMAIN-SUFFIX,mmstat.com,REJECT"
+  - "DOMAIN-KEYWORD,mopub,REJECT"
+  - "DOMAIN-KEYWORD,omgmta,REJECT"
+  - "DOMAIN-KEYWORD,openx,REJECT"
+  - "DOMAIN-KEYWORD,partnerad,REJECT"
+  - "DOMAIN-KEYWORD,pingfore,REJECT"
+  - "DOMAIN-KEYWORD,supersonicads,REJECT"
+  - "DOMAIN-KEYWORD,uedas,REJECT"
+  - "DOMAIN-KEYWORD,umeng,REJECT"
+  - "DOMAIN-KEYWORD,usage,REJECT"
+  - "DOMAIN-SUFFIX,vungle.com,REJECT"
+  - "DOMAIN-KEYWORD,wlmonitor,REJECT"
+  - "DOMAIN-KEYWORD,zjtoolbar,REJECT"
+  - "DOMAIN-SUFFIX,9to5mac.com,虫洞加速"
+  - "DOMAIN-SUFFIX,abpchina.org,虫洞加速"
+  - "DOMAIN-SUFFIX,adblockplus.org,虫洞加速"
+  - "DOMAIN-SUFFIX,adobe.com,虫洞加速"
+  - "DOMAIN-SUFFIX,akamaized.net,虫洞加速"
+  - "DOMAIN-SUFFIX,alfredapp.com,虫洞加速"
+  - "DOMAIN-SUFFIX,amplitude.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ampproject.org,虫洞加速"
+  - "DOMAIN-SUFFIX,android.com,虫洞加速"
+  - "DOMAIN-SUFFIX,angularjs.org,虫洞加速"
+  - "DOMAIN-SUFFIX,aolcdn.com,虫洞加速"
+  - "DOMAIN-SUFFIX,apkpure.com,虫洞加速"
+  - "DOMAIN-SUFFIX,appledaily.com,虫洞加速"
+  - "DOMAIN-SUFFIX,appshopper.com,虫洞加速"
+  - "DOMAIN-SUFFIX,appspot.com,虫洞加速"
+  - "DOMAIN-SUFFIX,arcgis.com,虫洞加速"
+  - "DOMAIN-SUFFIX,archive.org,虫洞加速"
+  - "DOMAIN-SUFFIX,armorgames.com,虫洞加速"
+  - "DOMAIN-SUFFIX,aspnetcdn.com,虫洞加速"
+  - "DOMAIN-SUFFIX,att.com,虫洞加速"
+  - "DOMAIN-SUFFIX,awsstatic.com,虫洞加速"
+  - "DOMAIN-SUFFIX,azureedge.net,虫洞加速"
+  - "DOMAIN-SUFFIX,azurewebsites.net,虫洞加速"
+  - "DOMAIN-SUFFIX,bing.com,虫洞加速"
+  - "DOMAIN-SUFFIX,bintray.com,虫洞加速"
+  - "DOMAIN-SUFFIX,bit.com,虫洞加速"
+  - "DOMAIN-SUFFIX,bit.ly,虫洞加速"
+  - "DOMAIN-SUFFIX,bitbucket.org,虫洞加速"
+  - "DOMAIN-SUFFIX,bjango.com,虫洞加速"
+  - "DOMAIN-SUFFIX,bkrtx.com,虫洞加速"
+  - "DOMAIN-SUFFIX,blog.com,虫洞加速"
+  - "DOMAIN-SUFFIX,blogcdn.com,虫洞加速"
+  - "DOMAIN-SUFFIX,blogger.com,虫洞加速"
+  - "DOMAIN-SUFFIX,blogsmithmedia.com,虫洞加速"
+  - "DOMAIN-SUFFIX,blogspot.com,虫洞加速"
+  - "DOMAIN-SUFFIX,blogspot.hk,虫洞加速"
+  - "DOMAIN-SUFFIX,bloomberg.com,虫洞加速"
+  - "DOMAIN-SUFFIX,box.com,虫洞加速"
+  - "DOMAIN-SUFFIX,box.net,虫洞加速"
+  - "DOMAIN-SUFFIX,cachefly.net,虫洞加速"
+  - "DOMAIN-SUFFIX,chromium.org,虫洞加速"
+  - "DOMAIN-SUFFIX,cl.ly,虫洞加速"
+  - "DOMAIN-SUFFIX,cloudflare.com,虫洞加速"
+  - "DOMAIN-SUFFIX,cloudfront.net,虫洞加速"
+  - "DOMAIN-SUFFIX,cloudmagic.com,虫洞加速"
+  - "DOMAIN-SUFFIX,cmail19.com,虫洞加速"
+  - "DOMAIN-SUFFIX,cnet.com,虫洞加速"
+  - "DOMAIN-SUFFIX,cocoapods.org,虫洞加速"
+  - "DOMAIN-SUFFIX,comodoca.com,虫洞加速"
+  - "DOMAIN-SUFFIX,crashlytics.com,虫洞加速"
+  - "DOMAIN-SUFFIX,culturedcode.com,虫洞加速"
+  - "DOMAIN-SUFFIX,d.pr,虫洞加速"
+  - "DOMAIN-SUFFIX,danilo.to,虫洞加速"
+  - "DOMAIN-SUFFIX,dayone.me,虫洞加速"
+  - "DOMAIN-SUFFIX,db.tt,虫洞加速"
+  - "DOMAIN-SUFFIX,deskconnect.com,虫洞加速"
+  - "DOMAIN-SUFFIX,disq.us,虫洞加速"
+  - "DOMAIN-SUFFIX,disqus.com,虫洞加速"
+  - "DOMAIN-SUFFIX,disquscdn.com,虫洞加速"
+  - "DOMAIN-SUFFIX,dnsimple.com,虫洞加速"
+  - "DOMAIN-SUFFIX,docker.com,虫洞加速"
+  - "DOMAIN-SUFFIX,dribbble.com,虫洞加速"
+  - "DOMAIN-SUFFIX,droplr.com,虫洞加速"
+  - "DOMAIN-SUFFIX,duckduckgo.com,虫洞加速"
+  - "DOMAIN-SUFFIX,dueapp.com,虫洞加速"
+  - "DOMAIN-SUFFIX,dytt8.net,虫洞加速"
+  - "DOMAIN-SUFFIX,edgecastcdn.net,虫洞加速"
+  - "DOMAIN-SUFFIX,edgekey.net,虫洞加速"
+  - "DOMAIN-SUFFIX,edgesuite.net,虫洞加速"
+  - "DOMAIN-SUFFIX,engadget.com,虫洞加速"
+  - "DOMAIN-SUFFIX,entrust.net,虫洞加速"
+  - "DOMAIN-SUFFIX,eurekavpt.com,虫洞加速"
+  - "DOMAIN-SUFFIX,evernote.com,虫洞加速"
+  - "DOMAIN-SUFFIX,fabric.io,虫洞加速"
+  - "DOMAIN-SUFFIX,fast.com,虫洞加速"
+  - "DOMAIN-SUFFIX,fastly.net,虫洞加速"
+  - "DOMAIN-SUFFIX,fc2.com,虫洞加速"
+  - "DOMAIN-SUFFIX,feedburner.com,虫洞加速"
+  - "DOMAIN-SUFFIX,feedly.com,虫洞加速"
+  - "DOMAIN-SUFFIX,feedsportal.com,虫洞加速"
+  - "DOMAIN-SUFFIX,fiftythree.com,虫洞加速"
+  - "DOMAIN-SUFFIX,firebaseio.com,虫洞加速"
+  - "DOMAIN-SUFFIX,flexibits.com,虫洞加速"
+  - "DOMAIN-SUFFIX,flickr.com,虫洞加速"
+  - "DOMAIN-SUFFIX,flipboard.com,虫洞加速"
+  - "DOMAIN-SUFFIX,g.co,虫洞加速"
+  - "DOMAIN-SUFFIX,gabia.net,虫洞加速"
+  - "DOMAIN-SUFFIX,geni.us,虫洞加速"
+  - "DOMAIN-SUFFIX,gfx.ms,虫洞加速"
+  - "DOMAIN-SUFFIX,ggpht.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ghostnoteapp.com,虫洞加速"
+  - "DOMAIN-SUFFIX,git.io,虫洞加速"
+  - "DOMAIN-KEYWORD,github,虫洞加速"
+  - "DOMAIN-SUFFIX,globalsign.com,虫洞加速"
+  - "DOMAIN-SUFFIX,gmodules.com,虫洞加速"
+  - "DOMAIN-SUFFIX,godaddy.com,虫洞加速"
+  - "DOMAIN-SUFFIX,golang.org,虫洞加速"
+  - "DOMAIN-SUFFIX,gongm.in,虫洞加速"
+  - "DOMAIN-SUFFIX,goo.gl,虫洞加速"
+  - "DOMAIN-SUFFIX,goodreaders.com,虫洞加速"
+  - "DOMAIN-SUFFIX,goodreads.com,虫洞加速"
+  - "DOMAIN-SUFFIX,gravatar.com,虫洞加速"
+  - "DOMAIN-SUFFIX,gstatic.com,虫洞加速"
+  - "DOMAIN-SUFFIX,gvt0.com,虫洞加速"
+  - "DOMAIN-SUFFIX,hockeyapp.net,虫洞加速"
+  - "DOMAIN-SUFFIX,hotmail.com,虫洞加速"
+  - "DOMAIN-SUFFIX,icons8.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ifixit.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ift.tt,虫洞加速"
+  - "DOMAIN-SUFFIX,ifttt.com,虫洞加速"
+  - "DOMAIN-SUFFIX,iherb.com,虫洞加速"
+  - "DOMAIN-SUFFIX,imageshack.us,虫洞加速"
+  - "DOMAIN-SUFFIX,img.ly,虫洞加速"
+  - "DOMAIN-SUFFIX,imgur.com,虫洞加速"
+  - "DOMAIN-SUFFIX,imore.com,虫洞加速"
+  - "DOMAIN-SUFFIX,instapaper.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ipn.li,虫洞加速"
+  - "DOMAIN-SUFFIX,is.gd,虫洞加速"
+  - "DOMAIN-SUFFIX,issuu.com,虫洞加速"
+  - "DOMAIN-SUFFIX,itgonglun.com,虫洞加速"
+  - "DOMAIN-SUFFIX,itun.es,虫洞加速"
+  - "DOMAIN-SUFFIX,ixquick.com,虫洞加速"
+  - "DOMAIN-SUFFIX,j.mp,虫洞加速"
+  - "DOMAIN-SUFFIX,js.revsci.net,虫洞加速"
+  - "DOMAIN-SUFFIX,jshint.com,虫洞加速"
+  - "DOMAIN-SUFFIX,jtvnw.net,虫洞加速"
+  - "DOMAIN-SUFFIX,justgetflux.com,虫洞加速"
+  - "DOMAIN-SUFFIX,kat.cr,虫洞加速"
+  - "DOMAIN-SUFFIX,klip.me,虫洞加速"
+  - "DOMAIN-SUFFIX,libsyn.com,虫洞加速"
+  - "DOMAIN-SUFFIX,linkedin.com,虫洞加速"
+  - "DOMAIN-SUFFIX,line-apps.com,虫洞加速"
+  - "DOMAIN-SUFFIX,linode.com,虫洞加速"
+  - "DOMAIN-SUFFIX,lithium.com,虫洞加速"
+  - "DOMAIN-SUFFIX,littlehj.com,虫洞加速"
+  - "DOMAIN-SUFFIX,live.com,虫洞加速"
+  - "DOMAIN-SUFFIX,live.net,虫洞加速"
+  - "DOMAIN-SUFFIX,livefilestore.com,虫洞加速"
+  - "DOMAIN-SUFFIX,llnwd.net,虫洞加速"
+  - "DOMAIN-SUFFIX,macid.co,虫洞加速"
+  - "DOMAIN-SUFFIX,macromedia.com,虫洞加速"
+  - "DOMAIN-SUFFIX,macrumors.com,虫洞加速"
+  - "DOMAIN-SUFFIX,mashable.com,虫洞加速"
+  - "DOMAIN-SUFFIX,mathjax.org,虫洞加速"
+  - "DOMAIN-SUFFIX,medium.com,虫洞加速"
+  - "DOMAIN-SUFFIX,mega.co.nz,虫洞加速"
+  - "DOMAIN-SUFFIX,mega.nz,虫洞加速"
+  - "DOMAIN-SUFFIX,megaupload.com,虫洞加速"
+  - "DOMAIN-SUFFIX,microsofttranslator.com,虫洞加速"
+  - "DOMAIN-SUFFIX,mindnode.com,虫洞加速"
+  - "DOMAIN-SUFFIX,mobile01.com,虫洞加速"
+  - "DOMAIN-SUFFIX,modmyi.com,虫洞加速"
+  - "DOMAIN-SUFFIX,msedge.net,虫洞加速"
+  - "DOMAIN-SUFFIX,myfontastic.com,虫洞加速"
+  - "DOMAIN-SUFFIX,name.com,虫洞加速"
+  - "DOMAIN-SUFFIX,nextmedia.com,虫洞加速"
+  - "DOMAIN-SUFFIX,nsstatic.net,虫洞加速"
+  - "DOMAIN-SUFFIX,nssurge.com,虫洞加速"
+  - "DOMAIN-SUFFIX,nyt.com,虫洞加速"
+  - "DOMAIN-SUFFIX,nytimes.com,虫洞加速"
+  - "DOMAIN-SUFFIX,omnigroup.com,虫洞加速"
+  - "DOMAIN-SUFFIX,onedrive.com,虫洞加速"
+  - "DOMAIN-SUFFIX,onenote.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ooyala.com,虫洞加速"
+  - "DOMAIN-SUFFIX,openvpn.net,虫洞加速"
+  - "DOMAIN-SUFFIX,openwrt.org,虫洞加速"
+  - "DOMAIN-SUFFIX,orkut.com,虫洞加速"
+  - "DOMAIN-SUFFIX,osxdaily.com,虫洞加速"
+  - "DOMAIN-SUFFIX,outlook.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ow.ly,虫洞加速"
+  - "DOMAIN-SUFFIX,paddleapi.com,虫洞加速"
+  - "DOMAIN-SUFFIX,parallels.com,虫洞加速"
+  - "DOMAIN-SUFFIX,parse.com,虫洞加速"
+  - "DOMAIN-SUFFIX,pdfexpert.com,虫洞加速"
+  - "DOMAIN-SUFFIX,periscope.tv,虫洞加速"
+  - "DOMAIN-SUFFIX,pinboard.in,虫洞加速"
+  - "DOMAIN-SUFFIX,pinterest.com,虫洞加速"
+  - "DOMAIN-SUFFIX,pixelmator.com,虫洞加速"
+  - "DOMAIN-SUFFIX,pixiv.net,虫洞加速"
+  - "DOMAIN-SUFFIX,playpcesor.com,虫洞加速"
+  - "DOMAIN-SUFFIX,playstation.com,虫洞加速"
+  - "DOMAIN-SUFFIX,playstation.com.hk,虫洞加速"
+  - "DOMAIN-SUFFIX,playstation.net,虫洞加速"
+  - "DOMAIN-SUFFIX,playstationnetwork.com,虫洞加速"
+  - "DOMAIN-SUFFIX,pushwoosh.com,虫洞加速"
+  - "DOMAIN-SUFFIX,rime.im,虫洞加速"
+  - "DOMAIN-SUFFIX,servebom.com,虫洞加速"
+  - "DOMAIN-SUFFIX,sfx.ms,虫洞加速"
+  - "DOMAIN-SUFFIX,shadowsocks.org,虫洞加速"
+  - "DOMAIN-SUFFIX,sharethis.com,虫洞加速"
+  - "DOMAIN-SUFFIX,shazam.com,虫洞加速"
+  - "DOMAIN-SUFFIX,skype.com,虫洞加速"
+  - "DOMAIN-SUFFIX,smartdns虫洞加速.com,虫洞加速"
+  - "DOMAIN-SUFFIX,smartmailcloud.com,虫洞加速"
+  - "DOMAIN-SUFFIX,sndcdn.com,虫洞加速"
+  - "DOMAIN-SUFFIX,sony.com,虫洞加速"
+  - "DOMAIN-SUFFIX,soundcloud.com,虫洞加速"
+  - "DOMAIN-SUFFIX,sourceforge.net,虫洞加速"
+  - "DOMAIN-SUFFIX,spotify.com,虫洞加速"
+  - "DOMAIN-SUFFIX,squarespace.com,虫洞加速"
+  - "DOMAIN-SUFFIX,sstatic.net,虫洞加速"
+  - "DOMAIN-SUFFIX,st.luluku.pw,虫洞加速"
+  - "DOMAIN-SUFFIX,stackoverflow.com,虫洞加速"
+  - "DOMAIN-SUFFIX,startpage.com,虫洞加速"
+  - "DOMAIN-SUFFIX,staticflickr.com,虫洞加速"
+  - "DOMAIN-SUFFIX,steamcommunity.com,虫洞加速"
+  - "DOMAIN-SUFFIX,symauth.com,虫洞加速"
+  - "DOMAIN-SUFFIX,symcb.com,虫洞加速"
+  - "DOMAIN-SUFFIX,symcd.com,虫洞加速"
+  - "DOMAIN-SUFFIX,tapbots.com,虫洞加速"
+  - "DOMAIN-SUFFIX,tapbots.net,虫洞加速"
+  - "DOMAIN-SUFFIX,tdesktop.com,虫洞加速"
+  - "DOMAIN-SUFFIX,techcrunch.com,虫洞加速"
+  - "DOMAIN-SUFFIX,techsmith.com,虫洞加速"
+  - "DOMAIN-SUFFIX,thepiratebay.org,虫洞加速"
+  - "DOMAIN-SUFFIX,theverge.com,虫洞加速"
+  - "DOMAIN-SUFFIX,time.com,虫洞加速"
+  - "DOMAIN-SUFFIX,timeinc.net,虫洞加速"
+  - "DOMAIN-SUFFIX,tiny.cc,虫洞加速"
+  - "DOMAIN-SUFFIX,tinypic.com,虫洞加速"
+  - "DOMAIN-SUFFIX,tmblr.co,虫洞加速"
+  - "DOMAIN-SUFFIX,todoist.com,虫洞加速"
+  - "DOMAIN-SUFFIX,trello.com,虫洞加速"
+  - "DOMAIN-SUFFIX,trustasiassl.com,虫洞加速"
+  - "DOMAIN-SUFFIX,tumblr.co,虫洞加速"
+  - "DOMAIN-SUFFIX,tumblr.com,虫洞加速"
+  - "DOMAIN-SUFFIX,tweetdeck.com,虫洞加速"
+  - "DOMAIN-SUFFIX,tweetmarker.net,虫洞加速"
+  - "DOMAIN-SUFFIX,twitch.tv,虫洞加速"
+  - "DOMAIN-SUFFIX,txmblr.com,虫洞加速"
+  - "DOMAIN-SUFFIX,typekit.net,虫洞加速"
+  - "DOMAIN-SUFFIX,ubertags.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ublock.org,虫洞加速"
+  - "DOMAIN-SUFFIX,ubnt.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ulyssesapp.com,虫洞加速"
+  - "DOMAIN-SUFFIX,urchin.com,虫洞加速"
+  - "DOMAIN-SUFFIX,usertrust.com,虫洞加速"
+  - "DOMAIN-SUFFIX,v.gd,虫洞加速"
+  - "DOMAIN-SUFFIX,v2ex.com,虫洞加速"
+  - "DOMAIN-SUFFIX,vimeo.com,虫洞加速"
+  - "DOMAIN-SUFFIX,vimeocdn.com,虫洞加速"
+  - "DOMAIN-SUFFIX,vine.co,虫洞加速"
+  - "DOMAIN-SUFFIX,vivaldi.com,虫洞加速"
+  - "DOMAIN-SUFFIX,vox-cdn.com,虫洞加速"
+  - "DOMAIN-SUFFIX,vsco.co,虫洞加速"
+  - "DOMAIN-SUFFIX,vultr.com,虫洞加速"
+  - "DOMAIN-SUFFIX,w.org,虫洞加速"
+  - "DOMAIN-SUFFIX,w3schools.com,虫洞加速"
+  - "DOMAIN-SUFFIX,webtype.com,虫洞加速"
+  - "DOMAIN-SUFFIX,wikiwand.com,虫洞加速"
+  - "DOMAIN-SUFFIX,wikileaks.org,虫洞加速"
+  - "DOMAIN-SUFFIX,wikimedia.org,虫洞加速"
+  - "DOMAIN-SUFFIX,wikipedia.com,虫洞加速"
+  - "DOMAIN-SUFFIX,wikipedia.org,虫洞加速"
+  - "DOMAIN-SUFFIX,windows.com,虫洞加速"
+  - "DOMAIN-SUFFIX,windows.net,虫洞加速"
+  - "DOMAIN-SUFFIX,wire.com,虫洞加速"
+  - "DOMAIN-SUFFIX,wordpress.com,虫洞加速"
+  - "DOMAIN-SUFFIX,workflowy.com,虫洞加速"
+  - "DOMAIN-SUFFIX,wp.com,虫洞加速"
+  - "DOMAIN-SUFFIX,wsj.com,虫洞加速"
+  - "DOMAIN-SUFFIX,wsj.net,虫洞加速"
+  - "DOMAIN-SUFFIX,xda-developers.com,虫洞加速"
+  - "DOMAIN-SUFFIX,xeeno.com,虫洞加速"
+  - "DOMAIN-SUFFIX,xiti.com,虫洞加速"
+  - "DOMAIN-SUFFIX,yahoo.com,虫洞加速"
+  - "DOMAIN-SUFFIX,yimg.com,虫洞加速"
+  - "DOMAIN-SUFFIX,ying.com,虫洞加速"
+  - "DOMAIN-SUFFIX,yoyo.org,虫洞加速"
+  - "DOMAIN-SUFFIX,ytimg.com,虫洞加速"
+  - "DOMAIN-SUFFIX,telegra.ph,虫洞加速"
+  - "DOMAIN-SUFFIX,telegram.org,虫洞加速"
+  - "IP-CIDR,91.108.4.0/22,虫洞加速,no-resolve"
+  - "IP-CIDR,91.108.8.0/21,虫洞加速,no-resolve"
+  - "IP-CIDR,91.108.16.0/22,虫洞加速,no-resolve"
+  - "IP-CIDR,91.108.56.0/22,虫洞加速,no-resolve"
+  - "IP-CIDR,149.154.160.0/20,虫洞加速,no-resolve"
+  - "IP-CIDR6,2001:67c:4e8::/48,虫洞加速,no-resolve"
+  - "IP-CIDR6,2001:b28:f23d::/48,虫洞加速,no-resolve"
+  - "IP-CIDR6,2001:b28:f23f::/48,虫洞加速,no-resolve"
+  - "IP-CIDR,120.232.181.162/32,虫洞加速,no-resolve"
+  - "IP-CIDR,120.241.147.226/32,虫洞加速,no-resolve"
+  - "IP-CIDR,120.253.253.226/32,虫洞加速,no-resolve"
+  - "IP-CIDR,120.253.255.162/32,虫洞加速,no-resolve"
+  - "IP-CIDR,120.253.255.34/32,虫洞加速,no-resolve"
+  - "IP-CIDR,120.253.255.98/32,虫洞加速,no-resolve"
+  - "IP-CIDR,180.163.150.162/32,虫洞加速,no-resolve"
+  - "IP-CIDR,180.163.150.34/32,虫洞加速,no-resolve"
+  - "IP-CIDR,180.163.151.162/32,虫洞加速,no-resolve"
+  - "IP-CIDR,180.163.151.34/32,虫洞加速,no-resolve"
+  - "IP-CIDR,203.208.39.0/24,虫洞加速,no-resolve"
+  - "IP-CIDR,203.208.40.0/24,虫洞加速,no-resolve"
+  - "IP-CIDR,203.208.41.0/24,虫洞加速,no-resolve"
+  - "IP-CIDR,203.208.43.0/24,虫洞加速,no-resolve"
+  - "IP-CIDR,203.208.50.0/24,虫洞加速,no-resolve"
+  - "IP-CIDR,220.181.174.162/32,虫洞加速,no-resolve"
+  - "IP-CIDR,220.181.174.226/32,虫洞加速,no-resolve"
+  - "IP-CIDR,220.181.174.34/32,虫洞加速,no-resolve"
+  - "DOMAIN,injections.adguard.org,DIRECT"
+  - "DOMAIN,local.adguard.org,DIRECT"
+  - "DOMAIN-SUFFIX,local,DIRECT"
+  - "IP-CIDR,127.0.0.0/8,DIRECT"
+  - "IP-CIDR,172.16.0.0/12,DIRECT"
+  - "IP-CIDR,192.168.0.0/16,DIRECT"
+  - "IP-CIDR,10.0.0.0/8,DIRECT"
+  - "IP-CIDR,17.0.0.0/8,DIRECT"
+  - "IP-CIDR,100.64.0.0/10,DIRECT"
+  - "IP-CIDR,224.0.0.0/4,DIRECT"
+  - "IP-CIDR6,fe80::/10,DIRECT"
+  - "DOMAIN-SUFFIX,cn,DIRECT"
+  - "DOMAIN-KEYWORD,-cn,DIRECT"
+  - "GEOIP,CN,DIRECT"
+  - "MATCH,虫洞加速"
+

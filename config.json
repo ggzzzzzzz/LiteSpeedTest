@@ -3,12 +3,12 @@
     "speedtestMode":"all",
     "pingMethod":"googleping",
     "sortMethod":"rspeed",
-    "concurrency":1,
+    "concurrency":8,
     "testMode":2,
-    "subscription":"https://raw.githubusercontent.com/freefq/free/master/v2",
+    "subscription":"https://gh.xxooo.cf/https://github.com/xiaoji235/airport-free/blob/main/clash/naidounode.txt",
     "timeout":16,
     "language":"en",
     "fontSize":24,
     "theme":"rainbow",
-    "outputMode": 1
+    "outputMode": 5
 }
